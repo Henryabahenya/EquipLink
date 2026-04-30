@@ -1,0 +1,158 @@
+{
+  "secondSource": [
+    {
+      "id": "5",
+      "name": "Iron Sheet",
+      "type": "Building",
+      "length": "2.5 meters",
+      "color": "Green",
+      "gauge": "30",
+      "quantity": 40,
+      "price": "900",
+      "image": "https://images.unsplash.com/photo-1621905251918-48416bd8575a?auto=format&fit=crop&q=80&w=800",
+      "status": "Available"
+    },
+    {
+      "id": "8",
+      "name": "Timber",
+      "type": "Building",
+      "details": "Cypress Beams",
+      "dimensions": "2x4",
+      "length": "12ft",
+      "quantity": 10,
+      "price": "600",
+      "image": "https://images.unsplash.com/photo-1533090161767-e6ffed986c88?auto=format&fit=crop&q=80&w=800",
+      "status": "Sold"
+    },
+    {
+      "id": "9",
+      "name": "Car Battery",
+      "type": "Automotive",
+      "details": "Maintenance Free",
+      "brand": "Chloride Exide",
+      "price": "4500",
+      "status": "Available",
+      "image": "https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?auto=format&fit=crop&q=80&w=800"
+    },
+    {
+      "id": "11",
+      "name": "Desktop Monitor",
+      "type": "Computing",
+      "details": "Dell 24-inch LED",
+      "resolution": "1080p",
+      "ports": "VGA/HDMI",
+      "image": "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&q=80&w=800",
+      "price": "4700",
+      "status": "Available"
+    },
+    {
+      "id": "13",
+      "name": "Solar Panel",
+      "type": "Power",
+      "details": "Polycrystalline",
+      "wattage": "200W",
+      "appearance": "No cracks",
+      "price": "12000",
+      "image": "https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?auto=format&fit=crop&q=80&w=800",
+      "status": "Available"
+    },
+    {
+      "id": "15",
+      "name": "Electric Motor",
+      "type": "Industrial",
+      "details": "Single Phase",
+      "horsepower": "2HP",
+      "usage": "Water pump",
+      "price": "15000",
+      "image": "https://images.unsplash.com/photo-1590959651373-a3db0f38a961?auto=format&fit=crop&q=80&w=800",
+      "status": "Available"
+    },
+    {
+      "id": "18",
+      "name": "External Hard Drive",
+      "type": "Storage",
+      "details": "Seagate Expansion",
+      "capacity": "1TB",
+      "interface": "USB 3.0",
+      "price": "5500",
+      "image": "https://images.unsplash.com/photo-1563770660941-20978e870e26?auto=format&fit=crop&q=80&w=800",
+      "status": "Available"
+    },
+    {
+      "id": "19",
+      "name": "UPS",
+      "type": "Power",
+      "details": "APC Back-UPS",
+      "capacity": "650VA",
+      "battery_status": "Requires replacement",
+      "price": "2000",
+      "image": "https://images.unsplash.com/photo-1593941707882-a5bba14938c7?auto=format&fit=crop&q=80&w=800",
+      "status": "Available"
+    },
+    {
+      "id": "22",
+      "name": "CCTV Camera",
+      "type": "Security",
+      "details": "Hikvision Dome",
+      "resolution": "2MP",
+      "price": "3200",
+      "image": "https://images.unsplash.com/photo-1557597774-9d273605dfa9?auto=format&fit=crop&q=80&w=800",
+      "status": "Available"
+    },
+    {
+      "id": "25",
+      "name": "Lithium Cell",
+      "type": "Power",
+      "details": "18650 Battery",
+      "voltage": "3.7V",
+      "quantity": 50,
+      "source": "Laptop salvage",
+      "price": "150",
+      "image": "https://images.unsplash.com/photo-1620288627223-53302f4e8c74?auto=format&fit=crop&q=80&w=800",
+      "status": "Sold"
+    },
+    {
+      "id": "26",
+      "name": "Window Frame",
+      "type": "Building",
+      "material": "Aluminum",
+      "dimensions": "4x4 ft",
+      "glass_included": false,
+      "price": "6000",
+      "image": "https://images.unsplash.com/photo-1509644851169-2acc08aa25b5?auto=format&fit=crop&q=80&w=800",
+      "status": "Sold"
+    },
+    {
+      "id": "27",
+      "name": "Router",
+      "type": "Networking",
+      "details": "TP-Link Archer",
+      "frequency": "Dual Band",
+      "sim_slot": true,
+      "price": "4500",
+      "image": "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&q=80&w=800",
+      "status": "Available"
+    },
+    {
+      "id": "29",
+      "name": "Printer",
+      "type": "Computing",
+      "details": "HP LaserJet P1102",
+      "ink_level": "Low",
+      "connectivity": "USB",
+      "price": "9000",
+      "image": "https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?auto=format&fit=crop&q=80&w=800",
+      "status": "Available"
+    },
+    {
+      "id": "1777452461432",
+      "name": "Battery",
+      "type": "Power",
+      "price": "1200",
+      "details": "100Ah Deep Cycle, Brand New.",
+      "quantity": "1",
+      "status": "Available",
+      "image": "https://images.unsplash.com/photo-1595246140625-573b715d11dc?w=800"
+    }
+  ]
+}
