@@ -138,22 +138,22 @@ const API_BASE_URL = import.meta.env.DEV
     setProcessing(false);
   };
 
-  const filteredMaterials = useMemo(() => {
-    const term = debouncedSearch.toLowerCase();
+const filteredMaterials = useMemo(() => {
+    const term = debouncedSearch.toLowerCase().trim();
     return materials.filter((m) => {
+      // Check if the search term matches name, type, or price
       const matchesSearch = 
-        m.name?.toLowerCase().includes(term) || 
-        m.type?.toLowerCase().includes(term) || 
-        m.price?.toString().includes(term);
-      const matchesCat = category === "All" || (m.type || "").toLowerCase().includes(category.toLowerCase());
+        (m.name?.toLowerCase().includes(term)) || 
+        (m.type?.toLowerCase().includes(term)) || 
+        (m.price?.toString().includes(term));
+      
+      // Check if it matches the selected category tab
+      const matchesCat = category === "All" || 
+        (m.type || "").toLowerCase() === category.toLowerCase();
+        
       return matchesSearch && matchesCat;
     });
   }, [materials, debouncedSearch, category]);
-
-  const resetFilters = () => {
-    setSearch("");
-    setCategory("All");
-  };
 
   return (
     <div className="min-h-screen flex flex-col bg-white text-slate-900 font-sans selection:bg-slate-900 selection:text-white">
@@ -163,7 +163,7 @@ const API_BASE_URL = import.meta.env.DEV
         </div>
       )}
 
-      {/* NAV - Responsive with Mobile Search */}
+{/* NAV */}
       <nav className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-100 px-4 md:px-6 py-4 shadow-sm">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           <div className="flex items-center gap-4 md:gap-8">
@@ -171,25 +171,39 @@ const API_BASE_URL = import.meta.env.DEV
               <div className="w-8 h-8 bg-slate-900 rounded flex items-center justify-center text-white font-bold text-xs group-hover:scale-105 transition-transform">EL</div>
               <span className="text-lg font-bold tracking-tight">EquipLink</span>
             </div>
-            {/* Desktop Search */}
+            
+            {/* Desktop Search Input */}
             <div className="relative hidden md:block">
-              <input type="text" placeholder="Search inventory..." value={search} onChange={(e) => setSearch(e.target.value)} className="bg-slate-50 border border-slate-200 rounded-full px-5 py-2 text-sm outline-none w-80 focus:ring-2 ring-slate-100 transition-all pl-10" />
+              <input 
+                type="text" 
+                placeholder="Search by name or price..." 
+                value={search} 
+                onChange={(e) => setSearch(e.target.value)} 
+                className="bg-slate-50 border border-slate-200 rounded-full px-5 py-2 text-sm outline-none w-80 focus:ring-2 ring-slate-100 transition-all pl-10" 
+              />
               <span className="absolute left-4 top-2.5 opacity-30 text-xs">🔍</span>
             </div>
           </div>
+
           <div className="flex items-center gap-3 md:gap-6">
             {isAdmin ? (
               <div className="flex gap-2 md:gap-4">
-                <button onClick={() => { setModalType("add"); setFormData({}); setModalOpen(true); }} className="bg-slate-900 text-white px-3 md:px-5 py-2 rounded-full text-[10px] md:text-xs font-bold hover:shadow-lg transition-all">Add Listing</button>
-                <button onClick={() => {setIsAdmin(false); localStorage.removeItem("adminAuth")}} className="text-rose-500 text-[10px] md:text-xs font-bold uppercase tracking-tighter">Logout</button>
+                <button onClick={() => { setModalType("add"); setFormData({}); setModalOpen(true); }} className="bg-slate-900 text-white px-3 md:px-5 py-2 rounded-full text-[10px] md:text-xs font-bold">Add Listing</button>
+                <button onClick={() => {setIsAdmin(false); localStorage.removeItem("adminAuth")}} className="text-rose-500 text-[10px] md:text-xs font-bold uppercase">Logout</button>
               </div>
-            ) : <button onClick={() => setShowLogin(true)} className="text-slate-400 text-[10px] md:text-xs font-bold hover:text-slate-900 transition-colors">Staff Access</button>}
+            ) : <button onClick={() => setShowLogin(true)} className="text-slate-400 text-[10px] md:text-xs font-bold hover:text-slate-900">Staff Access</button>}
           </div>
         </div>
 
-        {/* Mobile Search Bar - Visible only on mobile */}
+        {/* Mobile Search Input (The one you'll use on your phone) */}
         <div className="relative md:hidden w-full mt-4">
-          <input type="text" placeholder="Search inventory..." value={search} onChange={(e) => setSearch(e.target.value)} className="bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm outline-none w-full focus:ring-2 ring-slate-100 transition-all pl-10" />
+          <input 
+            type="text" 
+            placeholder="Search by name or price..." 
+            value={search} 
+            onChange={(e) => setSearch(e.target.value)} 
+            className="bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm outline-none w-full focus:ring-2 ring-slate-100 transition-all pl-10" 
+          />
           <span className="absolute left-4 top-3.5 opacity-30 text-xs">🔍</span>
         </div>
       </nav>
