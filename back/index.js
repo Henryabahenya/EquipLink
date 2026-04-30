@@ -67,24 +67,19 @@ app.put("/:id", (req, res) => {
   }
 });
 
-
+// DELETE
 app.delete("/:id", (req, res) => {
   const idToDelete = String(req.params.id).trim();
   
-  // 1. Force a fresh read from disk (ignore memory)
   const rawData = fs.readFileSync(DB_PATH, "utf8");
   const db = JSON.parse(rawData);
 
-  // 2. Filter
   const originalLength = db.secondSource.length;
   db.secondSource = db.secondSource.filter(item => String(item.id).trim() !== idToDelete);
 
   if (db.secondSource.length < originalLength) {
-    // 3. Force a hard write
     fs.writeFileSync(DB_PATH, JSON.stringify(db, null, 2), "utf8");
     console.log(`>>> HARD DELETED: ${idToDelete}`);
-    
-    // 4. Send back the ENTIRE new list
     return res.status(200).json(db.secondSource);
   } else {
     console.log(`>>> ID NOT FOUND: ${idToDelete}`);
@@ -92,12 +87,10 @@ app.delete("/:id", (req, res) => {
   }
 });
 
+// --- START SERVER ---
+const port = process.env.PORT || 8087; 
 
-
-
-const port = process.env.PORT || 8087; // Uses Render's port or defaults to 8087 locally
-
-// Change your .listen() or .run() line to:
-server.listen(port, () => {
-  console.log(`JSON Server is running on port ${port}`);
+// Changed 'server.listen' to 'app.listen' to match your variable name
+app.listen(port, () => {
+  console.log(`EquipLink API is running on port ${port}`);
 });
