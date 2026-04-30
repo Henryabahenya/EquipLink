@@ -78,8 +78,8 @@ function App() {
 const API_BASE_URL = import.meta.env.DEV 
   ? "http://localhost:8087"           // Use this while coding locally
   : "https://equiplink-api.onrender.com"; // Use this when the site is live
-  
-  const ADMIN_PASS = "1234";
+
+  const ADMIN_PASS = "Henry@07";
   const MY_PHONE = "254768407749";
   const MY_EMAIL = "henryabahenya@gmail.com";
 
@@ -163,45 +163,55 @@ const API_BASE_URL = import.meta.env.DEV
         </div>
       )}
 
-      {/* NAV */}
-      <nav className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-100 px-6 py-4 flex justify-between items-center shadow-sm">
-        <div className="flex items-center gap-8">
-          <div className="flex items-center gap-2 cursor-pointer group" onClick={resetFilters}>
-            <div className="w-8 h-8 bg-slate-900 rounded flex items-center justify-center text-white font-bold text-xs group-hover:scale-105 transition-transform">EL</div>
-            <span className="text-lg font-bold tracking-tight">EquipLink</span>
+      {/* NAV - Responsive with Mobile Search */}
+      <nav className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-100 px-4 md:px-6 py-4 shadow-sm">
+        <div className="max-w-7xl mx-auto flex justify-between items-center">
+          <div className="flex items-center gap-4 md:gap-8">
+            <div className="flex items-center gap-2 cursor-pointer group" onClick={resetFilters}>
+              <div className="w-8 h-8 bg-slate-900 rounded flex items-center justify-center text-white font-bold text-xs group-hover:scale-105 transition-transform">EL</div>
+              <span className="text-lg font-bold tracking-tight">EquipLink</span>
+            </div>
+            {/* Desktop Search */}
+            <div className="relative hidden md:block">
+              <input type="text" placeholder="Search inventory..." value={search} onChange={(e) => setSearch(e.target.value)} className="bg-slate-50 border border-slate-200 rounded-full px-5 py-2 text-sm outline-none w-80 focus:ring-2 ring-slate-100 transition-all pl-10" />
+              <span className="absolute left-4 top-2.5 opacity-30 text-xs">🔍</span>
+            </div>
           </div>
-          <div className="relative hidden md:block">
-            <input type="text" placeholder="Search inventory..." value={search} onChange={(e) => setSearch(e.target.value)} className="bg-slate-50 border border-slate-200 rounded-full px-5 py-2 text-sm outline-none w-80 focus:ring-2 ring-slate-100 transition-all pl-10" />
-            <span className="absolute left-4 top-2.5 opacity-30 text-xs">🔍</span>
+          <div className="flex items-center gap-3 md:gap-6">
+            {isAdmin ? (
+              <div className="flex gap-2 md:gap-4">
+                <button onClick={() => { setModalType("add"); setFormData({}); setModalOpen(true); }} className="bg-slate-900 text-white px-3 md:px-5 py-2 rounded-full text-[10px] md:text-xs font-bold hover:shadow-lg transition-all">Add Listing</button>
+                <button onClick={() => {setIsAdmin(false); localStorage.removeItem("adminAuth")}} className="text-rose-500 text-[10px] md:text-xs font-bold uppercase tracking-tighter">Logout</button>
+              </div>
+            ) : <button onClick={() => setShowLogin(true)} className="text-slate-400 text-[10px] md:text-xs font-bold hover:text-slate-900 transition-colors">Staff Access</button>}
           </div>
         </div>
-        <div className="flex items-center gap-6">
-          {isAdmin ? (
-            <div className="flex gap-4">
-              <button onClick={() => { setModalType("add"); setFormData({}); setModalOpen(true); }} className="bg-slate-900 text-white px-5 py-2 rounded-full text-xs font-bold hover:shadow-lg transition-all">Add Listing</button>
-              <button onClick={() => {setIsAdmin(false); localStorage.removeItem("adminAuth")}} className="text-rose-500 text-xs font-bold uppercase tracking-tighter">Logout</button>
-            </div>
-          ) : <button onClick={() => setShowLogin(true)} className="text-slate-400 text-xs font-bold hover:text-slate-900 transition-colors">Staff Access</button>}
+
+        {/* Mobile Search Bar - Visible only on mobile */}
+        <div className="relative md:hidden w-full mt-4">
+          <input type="text" placeholder="Search inventory..." value={search} onChange={(e) => setSearch(e.target.value)} className="bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm outline-none w-full focus:ring-2 ring-slate-100 transition-all pl-10" />
+          <span className="absolute left-4 top-3.5 opacity-30 text-xs">🔍</span>
         </div>
       </nav>
 
       {/* MAIN CONTENT */}
-      <main className="max-w-7xl mx-auto px-6 py-10 flex-grow w-full">
-        <div className="flex gap-4 mb-12 overflow-x-auto pb-4 scrollbar-hide">
+      <main className="max-w-7xl mx-auto px-4 md:px-6 py-6 md:py-10 flex-grow w-full">
+        {/* Categories - Optimized for swipe-scrolling on phones */}
+        <div className="flex gap-3 mb-8 md:mb-12 overflow-x-auto pb-4 scrollbar-hide -mx-4 px-4 md:mx-0 md:px-0">
           {["All", "Power", "Building", "Computing", "Industrial"].map((cat) => (
-            <button key={cat} onClick={() => setCategory(cat)} className={`px-6 py-2 rounded-full text-xs font-bold transition-all border ${category === cat ? "bg-slate-900 text-white border-slate-900" : "bg-white text-slate-400 border-slate-100 hover:border-slate-300"}`}>{cat}</button>
+            <button key={cat} onClick={() => setCategory(cat)} className={`whitespace-nowrap px-6 py-2.5 rounded-full text-xs font-bold transition-all border shrink-0 ${category === cat ? "bg-slate-900 text-white border-slate-900" : "bg-white text-slate-400 border-slate-100 hover:border-slate-300"}`}>{cat}</button>
           ))}
         </div>
 
         {loading ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
                 {Array(8).fill(0).map((_, i) => <SkeletonCard key={i} />)}
             </div>
         ) : filteredMaterials.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 animate-in fade-in duration-700">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 animate-in fade-in duration-700">
             {filteredMaterials.map((m) => (
               <div key={m.id} className={`group bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-xl transition-all duration-500 overflow-hidden flex flex-col ${m.status === "Sold" ? "opacity-75" : ""}`}>
-                <div className="h-56 relative overflow-hidden bg-slate-100">
+                <div className="h-48 md:h-56 relative overflow-hidden bg-slate-100">
                   <img src={m.image} alt={m.name} className={`w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 ${m.status === "Sold" ? "grayscale" : ""}`} />
                   {m.status === "Sold" && (
                     <div className="absolute inset-0 bg-slate-900/40 flex items-center justify-center">
@@ -209,20 +219,20 @@ const API_BASE_URL = import.meta.env.DEV
                     </div>
                   )}
                   {isAdmin && (
-                    <div className="absolute top-3 right-3 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <div className="absolute top-3 right-3 flex flex-col gap-2 md:opacity-0 group-hover:opacity-100 transition-opacity">
                       <button onClick={() => {setFormData(m); setModalType("edit"); setSelectedMaterial(m); setModalOpen(true)}} className="bg-white/90 p-2 rounded-lg shadow-sm hover:bg-white text-[10px] font-bold">EDIT</button>
                       <button onClick={() => handleToggleSold(m)} className="bg-slate-900/90 text-white p-2 rounded-lg shadow-sm text-[10px] font-bold">{m.status === "Sold" ? "RESTOCK" : "MARK SOLD"}</button>
                       <button onClick={() => handleDelete(m.id)} className="bg-rose-500 text-white p-2 rounded-lg shadow-sm text-[10px] font-bold">DEL</button>
                     </div>
                   )}
                 </div>
-                <div className="p-6 flex flex-col flex-grow">
+                <div className="p-5 md:p-6 flex flex-col flex-grow">
                   <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">{m.type}</span>
                   <h3 className="text-sm font-bold text-slate-900 mb-1 leading-tight">{m.name}</h3>
                   <p className="text-lg font-black text-slate-900 mt-auto pt-4">KES {m.price}</p>
                   <div className="mt-6 flex flex-col gap-2">
-                    <button onClick={() => { setSelectedMaterial(m); setModalType("view"); setModalOpen(true); }} className="w-full py-2.5 rounded-xl border border-slate-200 text-xs font-bold hover:bg-slate-50 transition-all">Details</button>
-                    <button disabled={m.status === "Sold"} onClick={() => window.open(`https://wa.me/${MY_PHONE}?text=Query: ${m.name}`)} className={`w-full py-2.5 rounded-xl text-xs font-bold transition-all ${m.status === "Sold" ? "bg-slate-100 text-slate-400" : "bg-slate-900 text-white hover:bg-slate-800"}`}>
+                    <button onClick={() => { setSelectedMaterial(m); setModalType("view"); setModalOpen(true); }} className="w-full py-3 rounded-xl border border-slate-200 text-xs font-bold hover:bg-slate-50 transition-all">Details</button>
+                    <button disabled={m.status === "Sold"} onClick={() => window.open(`https://wa.me/${MY_PHONE}?text=Query: ${m.name}`)} className={`w-full py-3 rounded-xl text-xs font-bold transition-all ${m.status === "Sold" ? "bg-slate-100 text-slate-400" : "bg-slate-900 text-white hover:bg-slate-800"}`}>
                       {m.status === "Sold" ? "Out of Stock" : "Connect"}
                     </button>
                   </div>
@@ -231,8 +241,7 @@ const API_BASE_URL = import.meta.env.DEV
             ))}
           </div>
         ) : (
-          <div className="flex flex-col items-center justify-center py-32 animate-in zoom-in-95 duration-500">
-            
+          <div className="flex flex-col items-center justify-center py-20 md:py-32 animate-in zoom-in-95 duration-500">
             <h3 className="text-sm font-black text-slate-900 uppercase tracking-widest mb-2">No items found</h3>
             <p className="text-slate-400 text-sm max-w-xs text-center leading-relaxed mb-8">
               We couldn't find any results for "{search || category}" in our current inventory.
@@ -251,10 +260,10 @@ const API_BASE_URL = import.meta.env.DEV
         setSupportContent(info[type]);
       }} />
 
-      {/* SUPPORT MODAL */}
+      {/* SUPPORT MODAL - Full width on mobile */}
       {supportContent && (
-        <div className="fixed inset-0 z-[300] bg-slate-900/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl w-full max-w-sm p-8 shadow-2xl">
+        <div className="fixed inset-0 z-[300] bg-slate-900/80 backdrop-blur-sm flex items-end md:items-center justify-center p-0 md:p-4">
+          <div className="bg-white rounded-t-3xl md:rounded-3xl w-full max-w-sm p-8 shadow-2xl animate-in slide-in-from-bottom duration-300">
             <h2 className="text-xs font-black uppercase tracking-widest text-slate-300 mb-2">{supportContent.title}</h2>
             <p className="text-slate-700 text-sm leading-relaxed mb-8">{supportContent.body}</p>
             <button onClick={() => setSupportContent(null)} className="w-full py-4 bg-slate-900 text-white rounded-2xl text-xs font-black uppercase tracking-widest">Close</button>
@@ -262,43 +271,45 @@ const API_BASE_URL = import.meta.env.DEV
         </div>
       )}
 
-      {/* ADMIN MODALS */}
+      {/* LOGIN MODAL */}
       {showLogin && (
         <div className="fixed inset-0 z-[150] bg-slate-900/60 backdrop-blur-md flex items-center justify-center p-4">
-          <div className="bg-white p-10 rounded-3xl shadow-2xl w-full max-w-sm text-center">
+          <div className="bg-white p-8 md:p-10 rounded-3xl shadow-2xl w-full max-w-sm text-center">
             <h3 className="font-black text-slate-900 mb-8 uppercase tracking-tighter text-xl">Staff Access</h3>
-            <input type="password" placeholder="••••" value={passkey} onChange={(e) => setPasskey(e.target.value)} className="w-full bg-slate-100 p-5 rounded-2xl mb-4 text-center text-2xl font-bold outline-none border-2 border-transparent focus:border-slate-900 transition-all" />
+            <input type="password" placeholder="••••" value={passkey} onChange={(e) => setPasskey(e.target.value)} className="w-full bg-slate-100 p-4 md:p-5 rounded-2xl mb-4 text-center text-2xl font-bold outline-none border-2 border-transparent focus:border-slate-900 transition-all" />
             <button onClick={() => passkey === ADMIN_PASS ? (setIsAdmin(true), localStorage.setItem("adminAuth","true"), setShowLogin(false), setPasskey("")) : alert("Denied")} className="w-full bg-slate-900 text-white py-4 rounded-2xl font-bold text-xs uppercase tracking-widest">Login</button>
             <button onClick={() => setShowLogin(false)} className="mt-6 text-[10px] text-slate-400 font-bold uppercase">Cancel</button>
           </div>
         </div>
       )}
 
+      {/* ADD/EDIT/VIEW MODAL - Better sizing for mobile */}
       {modalOpen && (
-        <div className="fixed inset-0 z-[100] bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl w-full max-w-md p-8 shadow-2xl max-h-[90vh] overflow-y-auto">
-            <div className="flex justify-between items-center mb-8">
+        <div className="fixed inset-0 z-[100] bg-slate-900/40 backdrop-blur-sm flex items-end md:items-center justify-center p-0 md:p-4">
+          <div className="bg-white rounded-t-3xl md:rounded-3xl w-full max-w-md p-6 md:p-8 shadow-2xl max-h-[95vh] overflow-y-auto animate-in slide-in-from-bottom duration-300">
+            <div className="flex justify-between items-center mb-6 md:mb-8">
               <h2 className="text-xs font-black uppercase tracking-widest text-slate-900">{modalType === "add" ? "New Inventory" : modalType === "edit" ? "Modify Listing" : "Product Specs"}</h2>
-              <button onClick={() => setModalOpen(false)} className="text-slate-300 hover:text-slate-900 transition-colors text-xl">✕</button>
+              <button onClick={() => setModalOpen(false)} className="text-slate-300 hover:text-slate-900 transition-colors text-xl p-2">✕</button>
             </div>
             {(modalType === "add" || modalType === "edit") ? (
-              <div className="grid grid-cols-1 gap-5">
+              <div className="grid grid-cols-1 gap-4 md:gap-5">
                 {["name", "type", "price", "image", "details"].map((f) => (
                   <div key={f}>
                     <label className="text-[10px] font-black text-slate-400 uppercase ml-1 mb-1 block">{f}</label>
                     <input value={formData[f] || ""} onChange={(e) => setFormData({ ...formData, [f]: e.target.value })} className="w-full bg-slate-50 p-4 rounded-xl text-sm border border-slate-100 focus:border-slate-900 outline-none transition-all" />
                   </div>
                 ))}
-                <button onClick={handleSave} className="bg-slate-900 text-white py-5 rounded-2xl font-black text-xs uppercase tracking-widest mt-4">Save</button>
+                <button onClick={handleSave} className="bg-slate-900 text-white py-4 md:py-5 rounded-2xl font-black text-xs uppercase tracking-widest mt-4">Save Listing</button>
               </div>
             ) : (
               selectedMaterial && (
                 <div className="space-y-6">
-                  <div className="bg-slate-50 p-6 rounded-2xl"><p className="text-sm text-slate-600 leading-relaxed italic">"{selectedMaterial.details || "No special notes."}"</p></div>
+                  <div className="bg-slate-50 p-5 md:p-6 rounded-2xl"><p className="text-sm text-slate-600 leading-relaxed italic">"{selectedMaterial.details || "No special notes."}"</p></div>
                   <div className="text-xs space-y-4 px-2">
                     <div className="flex justify-between border-b border-slate-100 pb-3"><span className="text-slate-400 font-bold">CATEGORY</span><span className="font-black">{selectedMaterial.type}</span></div>
                     <div className="flex justify-between border-b border-slate-100 pb-3"><span className="text-slate-400 font-bold">STATUS</span><span className={`font-black ${selectedMaterial.status === 'Sold' ? 'text-rose-500' : 'text-emerald-500'}`}>{selectedMaterial.status?.toUpperCase()}</span></div>
                   </div>
+                  <button onClick={() => setModalOpen(false)} className="w-full py-4 bg-slate-100 text-slate-900 rounded-2xl text-xs font-black uppercase tracking-widest">Done</button>
                 </div>
               )
             )}
